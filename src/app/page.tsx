@@ -1,9 +1,9 @@
-// src/app/page.tsx
+import ClaimForm from "../components/ClaimForm";
+
 export default function Home() {
   return (
-    <div>
-      <h1>Welcome to the Claims Portal</h1>
-      <p>This is the homepage.</p>
-    </div>
+    <main className="min-h-screen bg-gray-50">
+      <ClaimForm />
+    </main>
   );
 }
