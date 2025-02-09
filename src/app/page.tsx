@@ -1,4 +1,4 @@
-import ClaimForm from '@/components/ClaimForm'
+import ClaimForm from '../components/ClaimForm'
 
 export default function Home() {
   return (
