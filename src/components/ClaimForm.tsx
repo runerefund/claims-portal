@@ -1,11 +1,21 @@
 'use client'
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { AlertCircle, Info } from "lucide-react"
+
+interface FormData {
+  thorWalletAddress: string;
+  solanaWalletAddress: string;
+  lossAmountUsd: string;
+  thorfiProduct: string;
+  riskUnderstanding: string;
+  insolvencyUnderstanding: string;
+  impactStatement: string;
+}
 
 const ClaimForm = () => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     thorWalletAddress: '',
     solanaWalletAddress: '',
     lossAmountUsd: '',
@@ -18,7 +28,39 @@ const ClaimForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // ... rest of your component logic ...
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/claims', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit claim');
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError('Failed to submit claim. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
